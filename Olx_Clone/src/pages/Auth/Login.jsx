@@ -1,17 +1,30 @@
 import { useFormik } from "formik";
 import { loginValidate } from "../../utils/validateLogin";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { FirebaseContext } from "../../context/context";
+import { useContext } from "react";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { firebase } = useContext(FirebaseContext);
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     validate: loginValidate,
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
-      console.log(formik.errors);
+    onSubmit: ({ email, password }) => {
+      // signing in the user
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          alert("User Logedd", userCredential);
+          navigate("/");
+        })
+        .catch((error) => {
+          console.log("Error in User sign in: ", error.code, error.message);
+        });
     },
   });
   const style =
@@ -38,7 +51,9 @@ const Login = () => {
               onBlur={formik.handleBlur}
             />
             {formik.touched.email && formik.errors.email ? (
-              <p className="text-sm text-red-700">{formik.errors.email}</p>
+              <p className="text-sm font-medium text-red-700">
+                {formik.errors.email}
+              </p>
             ) : null}
           </div>
           <div className="mb-5">
@@ -51,7 +66,9 @@ const Login = () => {
               onBlur={formik.handleBlur}
             />
             {formik.touched.password && formik.errors.password ? (
-              <p className="text-sm text-red-700">{formik.errors.password}</p>
+              <p className="text-sm font-medium text-red-700">
+                {formik.errors.password}
+              </p>
             ) : null}
           </div>
           <button

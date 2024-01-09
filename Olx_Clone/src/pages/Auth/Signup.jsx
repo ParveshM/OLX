@@ -1,8 +1,11 @@
 import { useFormik } from "formik";
 import { validateSignUp } from "../../utils/validateSignUp";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { FirebaseContext } from "../../context/context";
+import { useContext } from "react";
 const SignUp = () => {
+  const navigate = useNavigate();
+  const { firebase } = useContext(FirebaseContext);
   const formik = useFormik({
     initialValues: {
       userName: "",
@@ -12,9 +15,28 @@ const SignUp = () => {
       rePassword: "",
     },
     validate: validateSignUp,
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2), "submitted");
-      console.log(formik.errors);
+    onSubmit: ({ userName, email, password, mobile }) => {
+      //  Creating user in firebase
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((result) => {
+          result.user.updateProfile({ displayName: userName }).then(() => {
+            firebase
+              .firestore()
+              .collection("users")
+              .add({
+                id: result.user.uid,
+                userName: userName,
+                mobile: mobile,
+              })
+              .then(() => {
+                navigate("/login");
+              })
+              .catch((err) => console.log("error in firestrore", err));
+          });
+        })
+        .catch((err) => console.log("error in inserting user", err));
     },
   });
 
@@ -42,7 +64,7 @@ const SignUp = () => {
               onChange={formik.handleChange}
             />
             {formik.touched.userName && formik.errors.userName ? (
-              <p className="text-md text-red-700 mb-0">
+              <p className="text-sm font-medium text-red-700 mb-0">
                 {formik.errors.userName}
               </p>
             ) : null}
@@ -57,7 +79,9 @@ const SignUp = () => {
               onChange={formik.handleChange}
             />
             {formik.touched.email && formik.errors.email ? (
-              <p className="text-md text-red-700 mb-0">{formik.errors.email}</p>
+              <p className="text-sm font-medium text-red-700 mb-0">
+                {formik.errors.email}
+              </p>
             ) : null}
           </div>
           <div className="mb-5">
@@ -70,7 +94,7 @@ const SignUp = () => {
               onChange={formik.handleChange}
             />
             {formik.touched.mobile && formik.errors.mobile ? (
-              <p className="text-md text-red-700 mb-0">
+              <p className="text-sm font-medium text-red-700 mb-0">
                 {formik.errors.mobile}
               </p>
             ) : null}
@@ -85,7 +109,7 @@ const SignUp = () => {
               className={style}
             />
             {formik.touched.password && formik.errors.password ? (
-              <p className="text-sm  text-red-700 mb-0 ">
+              <p className="text-sm font-medium text-red-700 mb-0 ">
                 {formik.errors.password}
               </p>
             ) : null}
@@ -100,7 +124,7 @@ const SignUp = () => {
               className={style}
             />
             {formik.touched.rePassword && formik.errors.rePassword ? (
-              <p className="text-md text-red-700 mb-0">
+              <p className="text-sm font-medium text-red-700 mb-0">
                 {formik.errors.rePassword}
               </p>
             ) : null}
