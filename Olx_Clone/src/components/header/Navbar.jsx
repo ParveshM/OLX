@@ -63,7 +63,7 @@ const Navbar = () => {
                 Login
               </Link>
             )}
-            <button className="px-4 py-1 border-[6px] font-semibold border-t-[#23E5DB] border-r-[#3A77FF] border-l-[#FFCE32] border-b-[#3A77FF] divide-y-2 rounded-3xl shadow-xl flex items-center">
+            <button className="px-4 py-1 border-[6px] font-semibold border-t-[#23E5DB] border-r-[#3A77FF] border-l-[#FFCE32] border-b-[#3A77FF] divide-y-2 rounded-3xl shadow-xl inline-flex gap-1 items-center">
               <FaPlus /> Sell
             </button>
           </div>

@@ -1,4 +1,5 @@
 import { FaAngleDown } from "react-icons/fa6";
+import { subMenu } from "../../constants/constants";
 
 const SubMenu = () => {
   return (
@@ -8,22 +9,13 @@ const SubMenu = () => {
         <FaAngleDown style={{ marginTop: "2px" }} />
       </div>
       <ul className="ml-2 flex gap-3 max-sm:flex-col max-sm:gap-1 *:text-md cursor-pointer ">
-        <li className="hover:text-slate-500">Cars</li>
-        <li className="hover:text-slate-500">MotorCycles</li>
-        <li className="hover:text-slate-500">Mobile</li>
-        <li className="hover:text-slate-500">
-          For Sale
-          <span className="">: House & Apartments</span>
-        </li>
-        <li className="hover:text-slate-500">Scooters</li>
-        <li className="hover:text-slate-500">
-          Commercial
-          <span className="">& other Vehicles</span>
-        </li>
-        <li className="hover:text-slate-500">
-          For Rent
-          <span className="">:House & Apartments</span>
-        </li>
+        {subMenu.map((item, index) => {
+          return (
+            <li className="hover:text-cyan-500" key={index}>
+              {item}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
