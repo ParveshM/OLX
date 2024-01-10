@@ -1,12 +1,14 @@
 import Logo from "./Logo";
 import { FaAngleDown } from "react-icons/fa6";
 import { FaSearch, FaPlus } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import { AuthContext } from "../../context/context";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext, FirebaseContext } from "../../context/context";
 import { useContext } from "react";
 
 const Navbar = () => {
   const { user } = useContext(AuthContext);
+  const { firebase } = useContext(FirebaseContext);
+  let navigate = useNavigate();
   return (
     <nav className="bg-slate-50 h-16 shadow-md border-2 border-white fixed w-full top-0 z-[999] ">
       <div className="flex justify-between items-center ">
@@ -40,7 +42,7 @@ const Navbar = () => {
             {user ? (
               <div className="flex flex-col group">
                 <span className="text-md font-semibold">
-                  {user.displayName}
+                  {user?.displayName}
                 </span>
 
                 <div className="hidden rounded-md group-hover:flex flex-col absolute">
@@ -63,7 +65,11 @@ const Navbar = () => {
                 Login
               </Link>
             )}
-            <button className="px-4 py-1 border-[6px] font-semibold border-t-[#23E5DB] border-r-[#3A77FF] border-l-[#FFCE32] border-b-[#3A77FF] divide-y-2 rounded-3xl shadow-xl inline-flex gap-1 items-center">
+            <button
+              className="px-4 py-1 border-[6px] font-semibold border-t-[#23E5DB] border-r-[#3A77FF]
+             border-l-[#FFCE32] border-b-[#3A77FF] divide-y-2 rounded-3xl shadow-xl inline-flex gap-1 items-center"
+              onClick={() => navigate("/sell_product")}
+            >
               <FaPlus /> Sell
             </button>
           </div>

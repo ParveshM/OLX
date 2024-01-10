@@ -1,7 +1,7 @@
 import { FaRegHeart } from "react-icons/fa";
 const Cards = () => {
   return (
-    <div className="relative shadow-md">
+    <div className="relative border border-slate-200 rounded-md shadow-md">
       <img
         className="p-5 overflow-hidden"
         src="https://apollo.olx.in/v1/files/p7yysv6y9apl1-IN/image;s=780x0;q=60"
