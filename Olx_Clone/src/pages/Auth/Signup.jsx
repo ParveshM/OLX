@@ -3,6 +3,7 @@ import { validateSignUp } from "../../utils/validateSignUp";
 import { Link, useNavigate } from "react-router-dom";
 import { FirebaseContext } from "../../context/context";
 import { useContext } from "react";
+
 const SignUp = () => {
   const navigate = useNavigate();
   const { firebase } = useContext(FirebaseContext);
