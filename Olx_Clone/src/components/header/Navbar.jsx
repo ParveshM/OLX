@@ -33,7 +33,7 @@ const Navbar = () => {
         </div>
         <div className="flex gap-2 mr-10 mt-2 max-lg:ml-5 xl:-ml-40 ">
           <div className="flex items-center ">
-            <p className="pr-2 font-semibold text-black hover:text-opacity-[.8] cursor-pointer">
+            <p className="pr-2 lg:pl-4 font-semibold text-black hover:text-opacity-[.8] cursor-pointer">
               ENGLISH
             </p>
             <FaAngleDown />
@@ -45,9 +45,9 @@ const Navbar = () => {
                   {user?.displayName}
                 </span>
 
-                <div className="hidden rounded-md group-hover:flex flex-col absolute">
+                <div className="hidden rounded-md group-hover:flex flex-col absolute ">
                   <button
-                    className="hidden text-black font-medium rounded-md group-hover:flex flex-col absolute pt-10 cursor-pointer"
+                    className="hidden text-black  font-medium rounded-md group-hover:flex flex-col absolute pt-10 cursor-pointer"
                     onClick={() => {
                       firebase.auth().signOut();
                       navigate("/login");

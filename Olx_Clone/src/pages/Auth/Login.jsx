@@ -73,9 +73,9 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            className="text-white  border-2 border-black mb-2 bg-black hover:bg-white hover:text-black focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-16 py-2.5 text-center"
+            className="text-white border-2 bg-center border-black mb-2 bg-black hover:bg-white hover:text-black focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-24 py-2.5 text-center"
           >
-            Register new account
+            Login
           </button>
           <div className="flex items-start mb-5">
             <label

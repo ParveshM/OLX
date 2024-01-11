@@ -1,11 +1,15 @@
 import { useFormik } from "formik";
 import { useState, useContext } from "react";
 import { FirebaseContext, AuthContext } from "../../context/context";
+import { useNavigate } from "react-router-dom";
 const AddProduct = () => {
   //  Todo: upload image array into firebase
   const { firebase } = useContext(FirebaseContext);
   const { user } = useContext(AuthContext);
   const [img, setImg] = useState(null);
+  const date = new Date();
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -13,26 +17,53 @@ const AddProduct = () => {
       description: "",
       images: [],
     },
-    onSubmit: ({ title, price, description, images }) => {
-      firebase
-        .storage()
-        .ref(`/image/${img.name}`)
-        .put(img)
-        .then(({ ref }) => {
-          ref.getDownloadURL().then((url) => {
-            firebase
-              .firestore()
-              .collection("products")
-              .add({
-                title: title,
-                price: price,
-                description: description,
-                imageUrl: url,
-                userId: user.uid,
-              })
-              .then(() => console.log(" collection updated"));
-          });
+    onSubmit: async ({ title, price, description, images }) => {
+      console.log(images);
+      // firebase
+      //   .storage()
+      //   .ref(`/image/${img.name}`)
+      //   .put(img)
+      //   .then(({ ref }) => {
+      //     ref.getDownloadURL().then((url) => {
+
+      //   });
+      const uploadPromises = images.map((img) => {
+        return new Promise((resolve, reject) => {
+          firebase
+            .storage()
+            .ref(`/image/${img.name}`)
+            .put(img)
+            .then(({ ref }) => {
+              ref.getDownloadURL().then((url) => {
+                resolve(url);
+              });
+            })
+            .catch((error) => {
+              reject(error);
+            });
         });
+      });
+
+      try {
+        const imageUrls = await Promise.all(uploadPromises);
+
+        firebase
+          .firestore()
+          .collection("products")
+          .add({
+            title: title,
+            price: price,
+            description: description,
+            imageUrl: imageUrls,
+            userId: user.uid,
+            createdAt: date.toDateString(),
+          })
+          .then(() => {
+            navigate("/");
+          });
+      } catch (e) {
+        console.log("errror in upload", e);
+      }
     },
   });
   return (
@@ -47,6 +78,7 @@ const AddProduct = () => {
           type="text"
           name="title"
           placeholder="Name"
+          onChange={formik.handleChange}
         />
 
         <input
@@ -54,6 +86,7 @@ const AddProduct = () => {
           type="number"
           name="price"
           placeholder="Price"
+          onChange={formik.handleChange}
         />
 
         <textarea
@@ -61,6 +94,7 @@ const AddProduct = () => {
           type="text"
           name="description"
           placeholder="Description"
+          onChange={formik.handleChange}
         />
         <input
           type="file"
