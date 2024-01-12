@@ -3,7 +3,6 @@ import { useState, useContext } from "react";
 import { FirebaseContext, AuthContext } from "../../context/context";
 import { useNavigate } from "react-router-dom";
 const AddProduct = () => {
-  //  Todo: upload image array into firebase
   const { firebase } = useContext(FirebaseContext);
   const { user } = useContext(AuthContext);
   const [img, setImg] = useState(null);
@@ -18,15 +17,6 @@ const AddProduct = () => {
       images: [],
     },
     onSubmit: async ({ title, price, description, images }) => {
-      console.log(images);
-      // firebase
-      //   .storage()
-      //   .ref(`/image/${img.name}`)
-      //   .put(img)
-      //   .then(({ ref }) => {
-      //     ref.getDownloadURL().then((url) => {
-
-      //   });
       const uploadPromises = images.map((img) => {
         return new Promise((resolve, reject) => {
           firebase
@@ -74,7 +64,7 @@ const AddProduct = () => {
         onSubmit={formik.handleSubmit}
       >
         <input
-          className="w-[90%] p-3 outline-none rounded-lg border-2 border-[#002f34] ring-2 ring-transparent focus:ring-2 focus:ring-[#001f24] transition duration-300"
+          className="w-[90%] p-3  outline-none rounded-lg border-2 border-[#002f34] ring-2 ring-transparent focus:ring-2 focus:ring-[#001f24] transition duration-300"
           type="text"
           name="title"
           placeholder="Name"
@@ -108,13 +98,7 @@ const AddProduct = () => {
           }}
           multiple
         />
-        {/* preview for the first image
-        <img
-          src={img ? URL.createObjectURL(img) : ""}
-          alt=""
-          width={"200px"}
-          height={"200px"}
-        /> */}
+
         <button
           className="bg-[#002f34] w-[90%] p-3 rounded-lg capitalize border-4
             border-transparent hover:border-[#002f34] hover:bg-white

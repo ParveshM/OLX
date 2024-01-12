@@ -45,8 +45,8 @@ const SignUp = () => {
     "shadow-sm  border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white";
 
   return (
-    <div className="flex flex-col  justify-center items-center h-screen bg-slate-50">
-      <div className="p-10 pb-2 bg-white shadow-lg rounded-lg">
+    <div className="flex flex-col  justify-center items-center  bg-slate-50 ">
+      <div className="p-10 pb-2 bg-white shadow-lg rounded-lg  border border-black m-5">
         <form className="max-w-sm mx-auto" onSubmit={formik.handleSubmit}>
           <div className="mb-5 ml-16">
             <img

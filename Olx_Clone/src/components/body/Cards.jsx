@@ -18,6 +18,7 @@ const Cards = ({ product }) => {
         className="py-1 mt-1 overflow-hidden h-40 object-contain w-full"
         src={product.imageUrl}
         alt={product.title}
+        width={"100%"}
       />
       <div className="absolute top-5 right-6 bg-white rounded-3xl px-2 py-2">
         <FaRegHeart style={{ fontSize: "1.5rem" }} />

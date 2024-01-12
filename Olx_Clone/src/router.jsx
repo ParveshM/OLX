@@ -7,6 +7,7 @@ import {
   ProductDetails,
 } from "./pages/index";
 import App from "./App";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,11 @@ const router = createBrowserRouter([
       },
       {
         path: "sell_product",
-        element: <AddProduct />,
+        element: (
+          <ProtectedRoute>
+            <AddProduct />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "product_details",
