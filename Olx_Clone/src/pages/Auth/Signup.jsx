@@ -3,6 +3,9 @@ import { validateSignUp } from "../../utils/validateSignUp";
 import { Link, useNavigate } from "react-router-dom";
 import { FirebaseContext } from "../../context/context";
 import { useContext } from "react";
+import Toast from "../../components/Toast";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -37,7 +40,17 @@ const SignUp = () => {
               .catch((err) => console.log("error in firestrore", err));
           });
         })
-        .catch((err) => console.log("error in inserting user", err));
+        .catch((error) => {
+          toast.error(error.message, {
+            toastStyle: {
+              background: "red",
+              color: "white",
+              minWidth: "300px",
+            },
+            position: "top-center",
+          });
+          console.log(error);
+        });
     },
   });
 
@@ -46,7 +59,8 @@ const SignUp = () => {
 
   return (
     <div className="flex flex-col  justify-center items-center  bg-slate-50 ">
-      <div className="p-10 pb-2 bg-white shadow-lg rounded-lg  border border-black m-5">
+      <Toast />
+      <div className="p-10 pb-2 bg-white shadow-lg rounded-lg  m-5">
         <form className="max-w-sm mx-auto" onSubmit={formik.handleSubmit}>
           <div className="mb-5 ml-16">
             <img

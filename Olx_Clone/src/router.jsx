@@ -8,11 +8,13 @@ import {
 } from "./pages/index";
 import App from "./App";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import ErrorPage from "./pages/Error/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "",
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",

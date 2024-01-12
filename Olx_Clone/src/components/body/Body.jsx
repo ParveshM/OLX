@@ -2,6 +2,7 @@ import Cards from "./Cards";
 import { FirebaseContext } from "../../context/context";
 import { useContext, useEffect, useState } from "react";
 import Skeleton from "./Skeleton";
+import Toast from "../Toast";
 const Body = () => {
   const { firebase } = useContext(FirebaseContext);
   const [products, setProducts] = useState([]);
@@ -25,6 +26,7 @@ const Body = () => {
   }, []);
   return (
     <>
+      <Toast />
       <h1 className="text-2xl font-medium pl-5 my-5  ">Fresh Recommedation </h1>
       <div className="max-w-[1324px] mx-auto grid lg:grid-cols-4 md:grid-cols-2 gap-2 px-[25px] mb-10">
         {isLoading
