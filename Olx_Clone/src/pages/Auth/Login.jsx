@@ -2,15 +2,15 @@ import { useFormik } from "formik";
 import { loginValidate } from "../../utils/validateLogin";
 import { Link, useNavigate } from "react-router-dom";
 import { FirebaseContext } from "../../context/context";
-import { useContext } from "react";
-import ShowToast from "../../components/Toast";
-
+import { useContext, useState } from "react";
 import Toast from "../../components/Toast";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const Login = () => {
   const navigate = useNavigate();
   const { firebase } = useContext(FirebaseContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -18,12 +18,14 @@ const Login = () => {
     },
     validate: loginValidate,
     onSubmit: ({ email, password }) => {
+      setIsSubmitting(true);
       // signing in the user
       firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then(() => navigate("/"))
         .catch((error) => {
+          setIsSubmitting(false);
           const { message: jsonString } = error;
           const {
             error: { message: errorMessage },
@@ -89,6 +91,7 @@ const Login = () => {
           <button
             type="submit"
             className="text-white border-2 bg-center border-black mb-2 bg-black hover:bg-white hover:text-black focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-24 py-2.5 text-center"
+            disabled={isSubmitting}
           >
             Login
           </button>

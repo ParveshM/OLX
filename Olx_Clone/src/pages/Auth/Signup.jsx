@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { validateSignUp } from "../../utils/validateSignUp";
 import { Link, useNavigate } from "react-router-dom";
 import { FirebaseContext } from "../../context/context";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Toast from "../../components/Toast";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,6 +10,8 @@ import "react-toastify/dist/ReactToastify.css";
 const SignUp = () => {
   const navigate = useNavigate();
   const { firebase } = useContext(FirebaseContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       userName: "",
@@ -20,6 +22,7 @@ const SignUp = () => {
     },
     validate: validateSignUp,
     onSubmit: ({ userName, email, password, mobile }) => {
+      setIsSubmitting(true);
       //  Creating user in firebase
       firebase
         .auth()
@@ -41,6 +44,7 @@ const SignUp = () => {
           });
         })
         .catch((error) => {
+          setIsSubmitting(false);
           toast.error(error.message, {
             toastStyle: {
               background: "red",
@@ -147,6 +151,7 @@ const SignUp = () => {
           <button
             type="submit"
             className="text-white  border-2 border-black mb-2 bg-black hover:bg-white hover:text-black focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-16 py-2.5 text-center"
+            disabled={isSubmitting}
           >
             Register new account
           </button>
