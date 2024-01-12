@@ -2,11 +2,15 @@ import { useFormik } from "formik";
 import { loginValidate } from "../../utils/validateLogin";
 import { Link, useNavigate } from "react-router-dom";
 import { FirebaseContext } from "../../context/context";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import Toast from "../../components/Toast";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const navigate = useNavigate();
   const { firebase } = useContext(FirebaseContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -14,24 +18,37 @@ const Login = () => {
     },
     validate: loginValidate,
     onSubmit: ({ email, password }) => {
+      setIsSubmitting(true);
       // signing in the user
       firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          alert("User Logedd", userCredential);
-          navigate("/");
-        })
+        .then(() => navigate("/"))
         .catch((error) => {
-          console.log("Error in User sign in: ", error.code, error.message);
+          setIsSubmitting(false);
+          const { message: jsonString } = error;
+          const {
+            error: { message: errorMessage },
+          } = JSON.parse(jsonString);
+
+          toast.error(errorMessage, {
+            toastStyle: {
+              background: "red",
+              color: "white",
+              minWidth: "300px",
+            },
+            position: "top-center",
+          });
         });
     },
   });
+
   const style =
     "shadow-sm  border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white";
 
   return (
     <div className="flex flex-col  justify-center items-center h-screen bg-slate-50">
+      <Toast />
       <div className="p-7 pb-2 bg-white shadow-lg rounded-lg">
         <form className="max-w-sm mx-auto" onSubmit={formik.handleSubmit}>
           <div className="mb-5 ml-16">
@@ -73,9 +90,10 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            className="text-white  border-2 border-black mb-2 bg-black hover:bg-white hover:text-black focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-16 py-2.5 text-center"
+            className="text-white border-2 bg-center border-black mb-2 bg-black hover:bg-white hover:text-black focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-24 py-2.5 text-center"
+            disabled={isSubmitting}
           >
-            Register new account
+            Login
           </button>
           <div className="flex items-start mb-5">
             <label

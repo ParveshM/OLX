@@ -1,25 +1,34 @@
 import { FaRegHeart } from "react-icons/fa";
-const Cards = () => {
+import { ProductContext } from "../../context/context";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { calculateDate } from "../../utils/calculateDate";
+const Cards = ({ product }) => {
+  const navigate = useNavigate();
+  const { setProductDetails } = useContext(ProductContext);
   return (
-    <div className="relative shadow-md">
+    <div
+      className="relative border border-slate-200 rounded-md shadow-md cursor-pointer"
+      onClick={() => {
+        setProductDetails(product);
+        navigate("/product_details");
+      }}
+    >
       <img
-        className="p-5 overflow-hidden"
-        src="https://apollo.olx.in/v1/files/p7yysv6y9apl1-IN/image;s=780x0;q=60"
-        alt="Card"
+        className="py-1 mt-1 overflow-hidden h-40 object-contain w-full"
+        src={product.imageUrl}
+        alt={product.title}
+        width={"100%"}
       />
       <div className="absolute top-5 right-6 bg-white rounded-3xl px-2 py-2">
         <FaRegHeart style={{ fontSize: "1.5rem" }} />
       </div>
       <div className="px-6 ">
-        <div className="font-bold text-xl mb-1">1055</div>
-        <p className="text-gray-700 text-base">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
-          quis hendrerit dui.
-        </p>
-        <div className="flex justify-between mb-2">
-          <h2>place</h2>
-          <h2>Dec 12</h2>
+        <div className="font-bold text-xl my-1">
+          ₹ {product.price.toLocaleString()}
         </div>
+        <p className="text-gray-700 text-base"></p>
+        <h2 className="mb-2">{calculateDate(product.createdAt)}</h2>
       </div>
     </div>
   );

@@ -3,17 +3,18 @@ import ReactDOM from "react-dom/client";
 import router from "./router";
 import { RouterProvider } from "react-router-dom";
 import "./index.css";
-// context for accessing the firebase
-import { FirebaseContext } from "./context/context";
+import { FirebaseContext } from "./context/context"; // context for accessing the firebase
 import firebase from "./fireBase/config";
-// context for User details
-import Context from "./context/context";
+import Context from "./context/context"; // context for User details
+import { Post } from "./context/context"; // context for post details
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <FirebaseContext.Provider value={{ firebase }}>
       <Context>
-        <RouterProvider router={router} />
+        <Post>
+          <RouterProvider router={router} />
+        </Post>
       </Context>
     </FirebaseContext.Provider>
   </React.StrictMode>

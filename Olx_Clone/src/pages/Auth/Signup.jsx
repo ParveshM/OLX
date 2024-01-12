@@ -2,11 +2,16 @@ import { useFormik } from "formik";
 import { validateSignUp } from "../../utils/validateSignUp";
 import { Link, useNavigate } from "react-router-dom";
 import { FirebaseContext } from "../../context/context";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import Toast from "../../components/Toast";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignUp = () => {
   const navigate = useNavigate();
   const { firebase } = useContext(FirebaseContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       userName: "",
@@ -17,6 +22,7 @@ const SignUp = () => {
     },
     validate: validateSignUp,
     onSubmit: ({ userName, email, password, mobile }) => {
+      setIsSubmitting(true);
       //  Creating user in firebase
       firebase
         .auth()
@@ -37,7 +43,18 @@ const SignUp = () => {
               .catch((err) => console.log("error in firestrore", err));
           });
         })
-        .catch((err) => console.log("error in inserting user", err));
+        .catch((error) => {
+          setIsSubmitting(false);
+          toast.error(error.message, {
+            toastStyle: {
+              background: "red",
+              color: "white",
+              minWidth: "300px",
+            },
+            position: "top-center",
+          });
+          console.log(error);
+        });
     },
   });
 
@@ -45,8 +62,9 @@ const SignUp = () => {
     "shadow-sm  border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-white";
 
   return (
-    <div className="flex flex-col  justify-center items-center h-screen bg-slate-50">
-      <div className="p-10 pb-2 bg-white shadow-lg rounded-lg">
+    <div className="flex flex-col  justify-center items-center  bg-slate-50 ">
+      <Toast />
+      <div className="p-10 pb-2 bg-white shadow-lg rounded-lg  m-5">
         <form className="max-w-sm mx-auto" onSubmit={formik.handleSubmit}>
           <div className="mb-5 ml-16">
             <img
@@ -133,6 +151,7 @@ const SignUp = () => {
           <button
             type="submit"
             className="text-white  border-2 border-black mb-2 bg-black hover:bg-white hover:text-black focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-16 py-2.5 text-center"
+            disabled={isSubmitting}
           >
             Register new account
           </button>
