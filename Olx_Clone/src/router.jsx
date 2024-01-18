@@ -7,8 +7,8 @@ import {
   ProductDetails,
 } from "./pages/index";
 import App from "./App";
-import ProtectedRoute from "./utils/ProtectedRoute";
 import ErrorPage from "./pages/Error/ErrorPage";
+import IsAuthenticated, { IsNotAuthenticated } from "./utils/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -23,9 +23,9 @@ const router = createBrowserRouter([
       {
         path: "sell_product",
         element: (
-          <ProtectedRoute>
+          <IsAuthenticated>
             <AddProduct />
-          </ProtectedRoute>
+          </IsAuthenticated>
         ),
       },
       {
@@ -36,11 +36,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/signUp",
-    element: <SignUp />,
+    element: (
+      <IsNotAuthenticated>
+        <SignUp />
+      </IsNotAuthenticated>
+    ),
   },
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <IsNotAuthenticated>
+        <Login />
+      </IsNotAuthenticated>
+    ),
   },
 ]);
 

@@ -13,7 +13,6 @@ const App = () => {
       setUser(user);
     });
   }, []);
-
   return (
     <>
       <Header />

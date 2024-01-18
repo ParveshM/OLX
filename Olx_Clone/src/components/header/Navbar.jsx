@@ -55,7 +55,6 @@ const Navbar = () => {
                   className="flex flex-col group"
                   onMouseEnter={toggleDropdown}
                   onMouseLeave={toggleDropdown}
-                  // onMouseOut={toggleDropdown}
                 >
                   <span className="cursor-pointer text-md font-semibold">
                     {user.displayName}

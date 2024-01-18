@@ -3,6 +3,7 @@ import { createContext, useState } from "react";
 // FireBase context for access the firebase config from anywher in the application
 export const FirebaseContext = createContext(null);
 FirebaseContext.displayName = "FireBaseContext";
+
 // Auth context for accessing the user from anywhere
 export const AuthContext = createContext(null);
 AuthContext.displayName = "AuthContext";
@@ -10,7 +11,6 @@ AuthContext.displayName = "AuthContext";
 /*
 Post context for accessing the card which is clicked on home,
 this can be done by passing the id also
-
 */
 export const ProductContext = createContext(null);
 ProductContext.displayName = "ProductContext";
