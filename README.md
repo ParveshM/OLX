@@ -58,8 +58,3 @@ Deploy the app to a hosting platform like Netlify, Vercel, or GitHub Pages.🚀
 ### Contributing
 
 Contributions are welcome! Feel free to open issues and pull requests. 🙌
-
-### Acknowledgements
-
-- [TMDB](https://developer.themoviedb.org/docs/getting-started) for providing the movie database API
-- Inspiration for UI and design from Netflix 🌟
